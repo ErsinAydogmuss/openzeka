@@ -1,4 +1,4 @@
-from flask import jsonify, request, current_app as app
+from flask import jsonify, request, abort, current_app as app
 from .models import db, User, Post, Album, Todo, Comment, Photo
 
 @app.route('/users', methods=['GET'])
@@ -8,7 +8,9 @@ def get_users():
 
 @app.route('/users/<int:user_id>', methods=['GET'])
 def get_user(user_id):
-    user = User.query.get_or_404(user_id)
+    user = User.query.get(user_id)
+    if user is None:
+        abort(404)
     return jsonify(user.to_dict())
 
 @app.route('/posts', methods=['GET'])
@@ -18,7 +20,9 @@ def get_posts():
 
 @app.route('/posts/<int:post_id>', methods=['GET'])
 def get_post(post_id):
-    post = Post.query.get_or_404(post_id)
+    post = Post.query.get(post_id)
+    if post is None:
+        abort(404)
     return jsonify(post.to_dict())
 
 @app.route('/albums', methods=['GET'])
@@ -28,7 +32,9 @@ def get_albums():
 
 @app.route('/albums/<int:album_id>', methods=['GET'])
 def get_album(album_id):
-    album = Album.query.get_or_404(album_id)
+    album = Album.query.get(album_id)
+    if album is None:
+        abort(404)
     return jsonify(album.to_dict())
 
 @app.route('/todos', methods=['GET'])
@@ -38,7 +44,9 @@ def get_todos():
 
 @app.route('/todos/<int:todo_id>', methods=['GET'])
 def get_todo(todo_id):
-    todo = Todo.query.get_or_404(todo_id)
+    todo = Todo.query.get(todo_id)
+    if todo is None:
+        abort(404)
     return jsonify(todo.to_dict())
 
 @app.route('/comments', methods=['GET'])
@@ -48,7 +56,9 @@ def get_comments():
 
 @app.route('/comments/<int:comment_id>', methods=['GET'])
 def get_comment(comment_id):
-    comment = Comment.query.get_or_404(comment_id)
+    comment = Comment.query.get(comment_id)
+    if comment is None:
+        abort(404)
     return jsonify(comment.to_dict())
 
 @app.route('/photos', methods=['GET'])
@@ -58,5 +68,7 @@ def get_photos():
 
 @app.route('/photos/<int:photo_id>', methods=['GET'])
 def get_photo(photo_id):
-    photo = Photo.query.get_or_404(photo_id)
+    photo = Photo.query.get(photo_id)
+    if photo is None:
+        abort(404)
     return jsonify(photo.to_dict())
